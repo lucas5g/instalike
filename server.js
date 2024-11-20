@@ -1,23 +1,10 @@
 import express from 'express'
+import { MongoClient } from 'mongodb'
+
 const app = express()
 
-const posts = [
-    {
-      id: 1,
-      descricao: "Uma foto teste",
-      imagem: "https://placecats.com/millie/300/150"
-    },
-    {
-      id: 2,
-      descricao: "Gato fazendo yoga",
-      imagem: "https://placekitten.com/400/300"
-    },
-    {
-      id: 3,
-      descricao: "Gatinho dormindo",
-      imagem: "https://placekitten.com/200/200"
-    }
-  ];
+const client = new MongoClient(process.env.MONGDODB_URL)
+
 
 app.get('/', (req, res) => {
     res.json({message: 'minha api test galdino'})
