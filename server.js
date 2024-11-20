@@ -1,21 +1,24 @@
 import express from 'express'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 
 const app = express()
-
-const client = new MongoClient(process.env.MONGDODB_URL)
+const url = process.env.MONGODB_URL
+const client = new MongoClient(url)
+await client.connect()
+const db = client.db('instabytes')
 
 
 app.get('/', (req, res) => {
     res.json({message: 'minha api test galdino'})
 })
 
-app.get('/posts', (req, res) => {
+app.get('/posts', async (req, res) => {
+    const posts = await db.collection('posts').find().toArray()
     res.json(posts)
 })
 
-app.get('/posts/:id', (req, res) => {
-    const post = posts.find(post => post.id === Number(req.params.id))
+app.get('/posts/:id', async (req, res) => {
+    const post = await db.collection('posts').findOne({ _id: new ObjectId(req.params.id) })
     res.json(post)
 })
 
